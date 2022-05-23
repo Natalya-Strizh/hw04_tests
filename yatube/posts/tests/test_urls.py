@@ -86,22 +86,6 @@ class TaskURLTests(TestCase):
         """URL-адрес использует соответствующий шаблон."""
         # Шаблоны по адресам
         templates_url_names = {
-            'posts/index.html': '/',
-            'posts/group_list.html': '/group/test_slug/',
-            'posts/profile.html': '/profile/author/',
-            'posts/post_detail.html': f'/posts/{self.post.id}/',
-            'posts/create_post.html': f'/posts/{self.post.id}/edit/',
-            'posts/create_post.html': '/create/',
-            }
-        for template, address in templates_url_names.items():
-            with self.subTest(address=address):
-                response = self.authorized_client.get(address)
-                self.assertTemplateUsed(response, template)
-
-    def test_urls_uses_correct_template1(self):
-        """URL-адрес использует соответствующий шаблон."""
-        # Шаблоны по адресам
-        templates_url_names = {
             '/': 'posts/index.html',
             '/group/test_slug/': 'posts/group_list.html',
             '/profile/author/': 'posts/profile.html',
