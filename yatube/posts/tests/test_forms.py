@@ -23,11 +23,9 @@ class PostCreateFormTests(TestCase):
             group=cls.group,
         )
 
-
     def setUp(self):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
-
 
     def test_post_create(self):
         """При отправке валидной формы со страницы создания поста

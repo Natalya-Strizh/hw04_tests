@@ -21,7 +21,6 @@ class TaskURLTests(TestCase):
             text='Тестовая пост',
         )
 
-
     def setUp(self):
         # Создаем неавторизованный клиент
         self.guest_client = Client()
@@ -32,36 +31,30 @@ class TaskURLTests(TestCase):
         # Авторизуем пользователя
         self.authorized_client.force_login(self.user)
 
-
     def test_home(self):
         """Страница / доступна любому пользователю."""
         response = self.guest_client.get('/')
         self.assertEqual(response.status_code, 200)
-
 
     def test_group(self):
         """Страница /group/test_slug/ доступна любому пользователю."""
         response = self.guest_client.get(f'/group/test_slug/')
         self.assertEqual(response.status_code, 200)
 
-
     def test_posts(self):
         """Страница /posts/<int:post_id>/ доступна любому пользователю."""
         response = self.guest_client.get(f'/posts/{self.post.id}/')
         self.assertEqual(response.status_code, 200)
-
 
     def test_profile(self):
         """Страница /profile/<str:username>/ доступна любому пользователю."""
         response = self.guest_client.get(f'/profile/{self.post.author}/')
         self.assertEqual(response.status_code, 200)
 
-
     def test_unexisting_page(self):
         """Страница /unexisting_page/ доступна любому пользователю."""
         response = self.guest_client.get('/unexisting_page/')
         self.assertEqual(response.status_code, 404)
-
 
     # Проверяем доступность страниц для авторизованного пользователя
     def test_create(self):
@@ -69,13 +62,11 @@ class TaskURLTests(TestCase):
         response = self.authorized_client.get('/create/')
         self.assertEqual(response.status_code, 200)
 
-
     def test_post_edit(self):
         """Страница '/posts/<int:post_id>/edit/' доступна авторизованному пользователю."""
         if self.authorized_client == self.post.author:
             response = self.authorized_client.get(f'/posts/{self.post.id}/edit/')
             self.assertEqual(response.status_code, 200)
-
 
     # Проверяем редиректы для неавторизованного пользователя
     def test_create_url_redirect_anonymous(self):
@@ -83,13 +74,11 @@ class TaskURLTests(TestCase):
         response = self.guest_client.get('/create/')
         self.assertEqual(response.status_code, 302)
 
-
     def test_post_edit_url_redirect_anonymous(self):
         """Страница /posts/<int:post_id>/edit/ перенаправляет анонимного
         пользователя."""
         response = self.guest_client.get(f'/posts/{self.post.id}/edit/')
         self.assertEqual(response.status_code, 302)
-
 
     def test_urls_uses_correct_template1(self):
         """URL-адрес использует соответствующий шаблон."""
