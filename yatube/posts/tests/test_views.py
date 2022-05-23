@@ -40,15 +40,15 @@ class PostViewsTest(TestCase):
         templates_page_names = {
             reverse('posts:index'): 'posts/index.html',
             reverse('posts:post_create'): 'posts/create_post.html',
-            reverse('posts:group_list', kwargs={'slug': self.group.slug}): 
+            reverse('posts:group_list', kwargs={'slug': self.group.slug}):
             'posts/group_list.html',
-            reverse('posts:profile', kwargs={'username': self.user.username}): 
+            reverse('posts:profile', kwargs={'username': self.user.username}):
             'posts/profile.html',
-            reverse('posts:post_detail', kwargs={'post_id': self.post.id}): 
+            reverse('posts:post_detail', kwargs={'post_id': self.post.id}):
             'posts/post_detail.html',
-            reverse('posts:post_update', kwargs={'post_id': self.post.id}): 
+            reverse('posts:post_update', kwargs={'post_id': self.post.id}):
             'posts/create_post.html',
-            }
+        }
         # Проверяем, что при обращении к name
         # вызывается соответствующий HTML-шаблон
         for reverse_name, template in templates_page_names.items():
@@ -73,8 +73,9 @@ class PostViewsTest(TestCase):
 
     def test_group_post_has_correct_context(self):
         """Проверяем что group_post передаёт правильный контекст"""
-        response = self.authorized_client.get(reverse('posts:group_list', 
-        kwargs={'slug': self.group.slug})) 
+        response = self.authorized_client.get(
+            reverse('posts:group_list',
+            kwargs={'slug': self.group.slug})) 
         group = response.context.get('group')
         self.assertEqual(group.title, self.group.title)
         self.assertEqual(group.description, self.group.description)
@@ -83,15 +84,17 @@ class PostViewsTest(TestCase):
 
     def test_profile_page_has_correct_context(self):
         """Проверяем что profile передаёт правильный контекст"""
-        response = self.authorized_client.get(reverse('posts:profile', 
-        kwargs={'username': self.user.username}))
+        response = self.authorized_client.get(
+            reverse('posts:profile', 
+            kwargs={'username': self.user.username}))
         author = response.context.get('author')
         self.assertEqual(author.username, self.user.username)
 
     def test_post_detail_page_has_correct_context(self):
         """Проверяем что post_detail передаёт правильный контекст"""
-        response = self.authorized_client.get(reverse('posts:post_detail', 
-        kwargs={'post_id': self.post.id}))
+        response = self.authorized_client.get(
+            reverse('posts:post_detail', 
+            kwargs={'post_id': self.post.id}))
         self.additional_function(response, 'post_number')
 
     def test_post_create_page_has_correct_context(self):
@@ -102,8 +105,9 @@ class PostViewsTest(TestCase):
     def test_post_edit_page_has_correct_context(self):
         """Проверяем что post_edit передаёт правильный контекст"""
         post = self.post
-        response = self.authorized_client.get(reverse('posts:post_update', 
-        kwargs={'post_id': self.post.id}))
+        response = self.authorized_client.get(
+            reverse('posts:post_update', 
+            kwargs={'post_id': self.post.id}))
         self.assertIsInstance(response.context.get('form'), PostForm)
         self.assertEqual(response.context.get('post'), post)
         self.assertTrue(response.context.get('is_edit'))

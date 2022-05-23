@@ -38,7 +38,7 @@ class TaskURLTests(TestCase):
 
     def test_group(self):
         """Страница /group/test_slug/ доступна любому пользователю."""
-        response = self.guest_client.get(f'/group/test_slug/')
+        response = self.guest_client.get('/group/test_slug/')
         self.assertEqual(response.status_code, 200)
 
     def test_posts(self):
@@ -63,9 +63,11 @@ class TaskURLTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_post_edit(self):
-        """Страница '/posts/<int:post_id>/edit/' доступна авторизованному пользователю."""
+        """Страница '/posts/<int:post_id>/edit/' 
+        доступна авторизованному пользователю."""
         if self.authorized_client == self.post.author:
-            response = self.authorized_client.get(f'/posts/{self.post.id}/edit/')
+            response = self.authorized_client.get(
+                f'/posts/{self.post.id}/edit/')
             self.assertEqual(response.status_code, 200)
 
     # Проверяем редиректы для неавторизованного пользователя
@@ -85,8 +87,8 @@ class TaskURLTests(TestCase):
         # Шаблоны по адресам
         templates_url_names = {
             'posts/index.html': '/',
-            'posts/group_list.html': f'/group/test_slug/',
-            'posts/profile.html': f'/profile/author/',
+            'posts/group_list.html': '/group/test_slug/',
+            'posts/profile.html': '/profile/author/',
             'posts/post_detail.html': f'/posts/{self.post.id}/',
             'posts/create_post.html': f'/posts/{self.post.id}/edit/',
             'posts/create_post.html': '/create/',

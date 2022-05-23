@@ -51,7 +51,6 @@ class PostCreateFormTests(TestCase):
         self.assertEqual(post.author, self.user)
         self.assertEqual(post.group_id, dict_data['group'])
 
-
     def test_post_edit(self):
         """При отправке валидной формы со страницы редактирования поста
         происходит изменение поста с post_id в базе данных"""
