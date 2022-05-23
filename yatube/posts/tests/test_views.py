@@ -114,9 +114,9 @@ class PostViewsTest(TestCase):
         post = self.post
         dict = {
             reverse('posts:index'): Post.objects.all(),
-            reverse('posts:group_list', kwargs={'slug': self.group.slug}): 
+            reverse('posts:group_list', kwargs={'slug': self.group.slug}):
             Post.objects.filter(group=post.group),
-            reverse('posts:profile', kwargs={'username': self.user.username}): 
+            reverse('posts:profile', kwargs={'username': self.user.username}):
             Post.objects.filter(author=post.author),
         }
         for reverse_name, filter in dict.items():
@@ -134,7 +134,7 @@ class PostViewsTest(TestCase):
 
 FIRST_PAGE = 10
 SECOND_PAGE = 5
-POSTS_ALL = 15   
+POSTS_ALL = 15
 
 
 class PaginatorViewsTest(TestCase):
@@ -147,11 +147,11 @@ class PaginatorViewsTest(TestCase):
             title='Тестовый текст',
             description='Тестовое описание',
             slug='test-slug',
-        )       
+        )
         for post in range(POSTS_ALL):
             Post.objects.create(
-                author = cls.user,
-                text = 'Текст №'+str(post+1),
+                author= cls.user,
+                text= 'Текст №'+str(post + 1),
                 group=cls.group,
             )
 
@@ -164,15 +164,19 @@ class PaginatorViewsTest(TestCase):
         dict = {
             reverse('posts:index'): FIRST_PAGE,
             reverse('posts:index') + '?page=2': SECOND_PAGE,
-            reverse('posts:group_list', kwargs={'slug': 'test-slug'}): FIRST_PAGE,
-            reverse('posts:group_list', kwargs={'slug': 'test-slug'}) + '?page=2': SECOND_PAGE,
-            reverse('posts:profile', kwargs={'username': 'author'}): FIRST_PAGE,
-            reverse('posts:profile', kwargs={'username': 'author'}) + '?page=2': SECOND_PAGE,
+            reverse(
+                'posts:group_list', kwargs={'slug': 'test-slug'}): FIRST_PAGE,
+            reverse(
+                'posts:group_list', kwargs={'slug': 'test-slug'}) + '?page=2': SECOND_PAGE,
+            reverse(
+                'posts:profile', kwargs={'username': 'author'}): FIRST_PAGE,
+            reverse(
+                'posts:profile', kwargs={'username': 'author'}) + '?page=2': SECOND_PAGE,
         }
         for reverse_page, len_posts in dict.items():
             with self.subTest(reverse_page=reverse_page):
                 self.assertEqual(len(self.client.get(reverse_page).context.get('page_obj')), len_posts)
-        
+
          
         
 
