@@ -63,7 +63,7 @@ class TaskURLTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_post_edit(self):
-        """Страница '/posts/<int:post_id>/edit/' 
+        """Страница '/posts/<int:post_id>/edit/'
         доступна авторизованному пользователю."""
         if self.authorized_client == self.post.author:
             response = self.authorized_client.get(
@@ -94,6 +94,22 @@ class TaskURLTests(TestCase):
             'posts/create_post.html': '/create/',
             }
         for template, address in templates_url_names.items():
+            with self.subTest(address=address):
+                response = self.authorized_client.get(address)
+                self.assertTemplateUsed(response, template)
+
+    def test_urls_uses_correct_template1(self):
+        """URL-адрес использует соответствующий шаблон."""
+        # Шаблоны по адресам
+        templates_url_names = {
+            '/': 'posts/index.html',
+            '/group/test_slug/': 'posts/group_list.html',
+            '/profile/author/': 'posts/profile.html',
+            f'/posts/{self.post.id}/': 'posts/post_detail.html',
+            f'/posts/{self.post.id}/edit/': 'posts/create_post.html',
+            '/create/': 'posts/create_post.html',
+            }
+        for address, template in templates_url_names.items():
             with self.subTest(address=address):
                 response = self.authorized_client.get(address)
                 self.assertTemplateUsed(response, template)

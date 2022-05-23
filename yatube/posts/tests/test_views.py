@@ -73,8 +73,10 @@ class PostViewsTest(TestCase):
 
     def test_group_post_has_correct_context(self):
         """Проверяем что group_post передаёт правильный контекст"""
-        response = self.authorized_client.get(reverse('posts:group_list',
-                                              kwargs={'slug': self.group.slug}))
+        response = self.authorized_client.get(
+            reverse('posts:group_list',
+            kwargs={'slug': self.group.slug})
+            )
         group = response.context.get('group')
         self.assertEqual(group.title, self.group.title)
         self.assertEqual(group.description, self.group.description)
@@ -85,7 +87,8 @@ class PostViewsTest(TestCase):
         """Проверяем что profile передаёт правильный контекст"""
         response = self.authorized_client.get(
             reverse('posts:profile', 
-            kwargs={'username': self.user.username}))
+            kwargs={'username': self.user.username})
+            )
         author = response.context.get('author')
         self.assertEqual(author.username, self.user.username)
 
@@ -93,7 +96,8 @@ class PostViewsTest(TestCase):
         """Проверяем что post_detail передаёт правильный контекст"""
         response = self.authorized_client.get(
             reverse('posts:post_detail', 
-            kwargs={'post_id': self.post.id}))
+            kwargs={'post_id': self.post.id})
+            )
         self.additional_function(response, 'post_number')
 
     def test_post_create_page_has_correct_context(self):
@@ -106,7 +110,8 @@ class PostViewsTest(TestCase):
         post = self.post
         response = self.authorized_client.get(
             reverse('posts:post_update', 
-            kwargs={'post_id': self.post.id}))
+            kwargs={'post_id': self.post.id})
+            )
         self.assertIsInstance(response.context.get('form'), PostForm)
         self.assertEqual(response.context.get('post'), post)
         self.assertTrue(response.context.get('is_edit'))
@@ -130,8 +135,10 @@ class PostViewsTest(TestCase):
         """Дополнительная проверка при создании поста. Пост не появляеться
         в другой группе"""
         post = self.post
-        response = self.authorized_client.get(reverse('posts:group_list', 
-        kwargs={'slug': self.group.slug}))
+        response = self.authorized_client.get(
+            reverse('posts:group_list', 
+            kwargs={'slug': self.group.slug})
+            )
         self.assertNotIn(post, response.context.get('page_obj'))
 
 
