@@ -73,9 +73,8 @@ class PostViewsTest(TestCase):
 
     def test_group_post_has_correct_context(self):
         """Проверяем что group_post передаёт правильный контекст"""
-        response = self.authorized_client.get(
-            reverse('posts:group_list',
-            kwargs={'slug': self.group.slug})) 
+        response = self.authorized_client.get(reverse('posts:group_list',
+                                              kwargs={'slug': self.group.slug}))
         group = response.context.get('group')
         self.assertEqual(group.title, self.group.title)
         self.assertEqual(group.description, self.group.description)
