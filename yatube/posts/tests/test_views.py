@@ -1,4 +1,4 @@
-import random 
+import random
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -164,7 +164,6 @@ class PaginatorViewsTest(TestCase):
         self.authorized_client = Client()
         self.authorized_client.force_login(PaginatorViewsTest.user)
 
-
     def test_first_page(self):
         for url in self.dict_url:
             response = self.authorized_client.get(url)
@@ -174,5 +173,3 @@ class PaginatorViewsTest(TestCase):
         for url in self.dict_url:
             response = self.authorized_client.get(url, {'page': 2})
             self.assertEqual(len(response.context['page_obj']), self.obj_pages)
-
-
