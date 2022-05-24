@@ -4,6 +4,9 @@ from django.test import TestCase, Client
 from ..models import Group, Post
 
 User = get_user_model()
+ACCEPTED = 200
+FOUND = 302
+NOT_FOUND = 404
 
 
 class TaskURLTests(TestCase):
@@ -31,36 +34,31 @@ class TaskURLTests(TestCase):
         # Авторизуем пользователя
         self.authorized_client.force_login(self.user)
 
-    def test_home(self):
-        """Страница / доступна любому пользователю."""
-        response = self.guest_client.get('/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_group(self):
-        """Страница /group/test_slug/ доступна любому пользователю."""
-        response = self.guest_client.get('/group/test_slug/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_posts(self):
-        """Страница /posts/<int:post_id>/ доступна любому пользователю."""
-        response = self.guest_client.get(f'/posts/{self.post.id}/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_profile(self):
-        """Страница /profile/<str:username>/ доступна любому пользователю."""
-        response = self.guest_client.get(f'/profile/{self.post.author}/')
-        self.assertEqual(response.status_code, 200)
+    def test_urls_uses_correct_template1(self):
+        """Проверяем доступ страниц"""
+        url_names = {
+            '/': 'posts/index.html',
+            '/group/test_slug/': 'posts/group_list.html',
+            '/profile/author/': 'posts/profile.html',
+            f'/posts/{self.post.id}/': 'posts/post_detail.html',
+            f'/posts/{self.post.id}/edit/': 'posts/create_post.html',
+            '/create/': 'posts/create_post.html',
+        }
+        for address in url_names.items():
+            with self.subTest(address=address):
+                response = self.guest_client.get(address)
+                self.assertEqual(response.status_code, ACCEPTED)
 
     def test_unexisting_page(self):
         """Страница /unexisting_page/ доступна любому пользователю."""
         response = self.guest_client.get('/unexisting_page/')
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, NOT_FOUND)
 
     # Проверяем доступность страниц для авторизованного пользователя
     def test_create(self):
         """Страница '/create/' доступна авторизованному пользователю."""
         response = self.authorized_client.get('/create/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, ACCEPTED)
 
     def test_post_edit(self):
         """Страница '/posts/<int:post_id>/edit/'
@@ -68,19 +66,19 @@ class TaskURLTests(TestCase):
         if self.authorized_client == self.post.author:
             response = self.authorized_client.get(
                 f'/posts/{self.post.id}/edit/')
-            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.status_code, ACCEPTED)
 
     # Проверяем редиректы для неавторизованного пользователя
     def test_create_url_redirect_anonymous(self):
         """Страница /create/перенаправляет анонимного пользователя."""
         response = self.guest_client.get('/create/')
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, FOUND)
 
     def test_post_edit_url_redirect_anonymous(self):
         """Страница /posts/<int:post_id>/edit/ перенаправляет анонимного
         пользователя."""
         response = self.guest_client.get(f'/posts/{self.post.id}/edit/')
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, FOUND)
 
     def test_urls_uses_correct_template1(self):
         """URL-адрес использует соответствующий шаблон."""
