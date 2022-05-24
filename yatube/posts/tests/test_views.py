@@ -150,9 +150,9 @@ class PaginatorViewsTest(TestCase):
         )
         for post in range(POSTS_ALL):
             Post.objects.create(
-                author = cls.user,
-                text = 'Текст №' + str(post + 1),
-                group = cls.group,
+                author=cls.user,
+                text='Текст №' + str(post + 1),
+                group=cls.group,
             )
 
     def setUp(self):
