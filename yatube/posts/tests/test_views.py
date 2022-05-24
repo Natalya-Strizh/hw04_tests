@@ -166,10 +166,10 @@ class PaginatorViewsTest(TestCase):
             reverse(
                 'posts:index') + '?page=2': SECOND_PAGE,
             reverse(
-                'posts:group_list', \
+                'posts:group_list',
                 kwargs={'slug': 'test-slug'}): FIRST_PAGE,
             reverse(
-                'posts:group_list', kwargs={'slug':'test-slug'}) + '?page=2': SECOND_PAGE,
+                'posts:group_list', kwargs={'slug': 'test-slug'}) + '?page=2': SECOND_PAGE,
             reverse(
                 'posts:profile', kwargs={'username': 'author'}): FIRST_PAGE,
             reverse(
@@ -178,5 +178,5 @@ class PaginatorViewsTest(TestCase):
         for reverse_page, len_posts in dict.items():
             with self.subTest(reverse_page=reverse_page):
                 self.assertEqual(
-                    len(self.client.get(reverse_page).context.get('page_obj')), 
+                    len(self.client.get(reverse_page).context.get('page_obj')),
                     len_posts)
