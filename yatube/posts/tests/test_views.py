@@ -148,7 +148,7 @@ class PaginatorViewsTest(TestCase):
             description='Тестовое описание',
             slug='test-slug',
         )
-        for post in range(POSTS_ALL): 
+        for post in range(POSTS_ALL):
             Post.objects.create(
                 author = cls.user,
                 text = 'Текст №' + str(post + 1),
@@ -163,36 +163,21 @@ class PaginatorViewsTest(TestCase):
     def test_paginator(self):
         dict = {
             reverse('posts:index'): FIRST_PAGE,
-            reverse('posts:index') + '?page=2': SECOND_PAGE,
-            reverse('posts:group_list', kwargs={'slug': 
-            'test-slug'}): FIRST_PAGE,
-            reverse('posts:group_list', kwargs={'slug': 
-            'test-slug'}) + '?page=2': SECOND_PAGE,
-            reverse('posts:profile', kwargs={'username': 'author'}):
-            FIRST_PAGE,
-            reverse('posts:profile', kwargs={'username': 
-            'author'}) + '?page=2':
-            SECOND_PAGE,
+            reverse(
+                'posts:index') + '?page=2': SECOND_PAGE,
+            reverse(
+                'posts:group_list', kwargs={'slug': 'test-slug'}): FIRST_PAGE,
+            reverse(
+                'posts:group_list', kwargs={'slug': 
+                'test-slug'}) + '?page=2': SECOND_PAGE,
+            reverse(
+                'posts:profile', kwargs={'username': 
+                'author'}): FIRST_PAGE,
+            reverse(
+                'posts:profile', kwargs={'username': 
+                'author'}) + '?page=2': SECOND_PAGE,
         }
         for reverse_page, len_posts in dict.items():
             with self.subTest(reverse_page=reverse_page):
                 self.assertEqual(
                     len(self.client.get(reverse_page).context.get('page_obj')), len_posts)
-
-         
-        
-
-
-
-
-
-            
-
-
-
-
-
-
-
-   
-        
