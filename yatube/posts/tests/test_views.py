@@ -169,11 +169,13 @@ class PaginatorViewsTest(TestCase):
                 'posts:group_list',
                 kwargs={'slug': 'test-slug'}): FIRST_PAGE,
             reverse(
-                'posts:group_list', kwargs={'slug': 'test-slug'}) + '?page=2': SECOND_PAGE,
+                'posts:group_list', 
+                kwargs={'slug': 'test-slug'}) + '?page=2': SECOND_PAGE,
             reverse(
                 'posts:profile', kwargs={'username': 'author'}): FIRST_PAGE,
             reverse(
-                'posts:profile', kwargs={'username': 'author'}) + '?page=2': SECOND_PAGE,
+                'posts:profile', 
+                kwargs={'username': 'author'}) + '?page=2': SECOND_PAGE,
         }
         for reverse_page, len_posts in dict.items():
             with self.subTest(reverse_page=reverse_page):
